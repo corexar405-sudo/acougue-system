@@ -119,60 +119,61 @@ export default function Produtos() {
 
   async function finalizarPedido() {
 
-    const numeroPedido =
-      Math.floor(Math.random() * 99999)
+  const numeroPedido =
+    Math.floor(Math.random() * 99999)
 
-    const pedidoTexto = carrinho
-      .map(function(item) {
-        return item.nome + " x" + item.quantidade
-      })
-      .join("%0A")
+  const pedidoTexto = carrinho
+    .map((item) =>
+      `${item.nome} x${item.quantidade}`
+    )
+    .join("\n")
 
-    await supabase.from("pedidos").insert([
-      {
-        cliente: nome,
-        endereco,
-        telefone,
-        pedido: pedidoTexto,
-        total,
-        status: "aguardando",
-      },
-    ])
+  await supabase.from("pedidos").insert([
+    {
+      cliente: nome,
+      endereco,
+      telefone,
+      pedido: pedidoTexto,
+      total,
+      status: "aguardando",
+    },
+  ])
 
-    const mensagem =
-      "Pedido realizado com sucesso!%0A%0A" +
+  const mensagem = `
+Pedido realizado com sucesso!
 
-      "Pedido #" + numeroPedido + "%0A%0A" +
+Pedido #${numeroPedido}
 
-      "----------------------------%0A%0A" +
+----------------------------
 
-      "DETALHES DO PEDIDO%0A%0A" +
+DETALHES DO PEDIDO
 
-      pedidoTexto + "%0A%0A" +
+${pedidoTexto}
 
-      "----------------------------%0A%0A" +
+----------------------------
 
-      "Total: R$ " + total.toFixed(2) + "%0A%0A" +
+Total: R$ ${total.toFixed(2)}
 
-      "Endereco:%0A" +
-      endereco + "%0A%0A" +
+Endereco:
+${endereco}
 
-      "Telefone:%0A" +
-      telefone + "%0A%0A" +
+Telefone:
+${telefone}
 
-      "Forma de pagamento:%0A" +
-      "PIX ou Dinheiro%0A%0A" +
+Forma de pagamento:
+PIX ou Dinheiro
 
-      "Entrega estimada:%0A" +
-      "40 minutos%0A%0A" +
+Entrega estimada:
+40 minutos
 
-      "Obrigado pela preferencia!"
+Obrigado pela preferencia!
+`
 
-    const url =
-      "https://api.whatsapp.com/send?phone=5512988736751&text=" +
-      mensagem
+  const url =
+    "https://api.whatsapp.com/send?phone=5512988736751&text=" +
+    encodeURIComponent(mensagem)
 
-    window.open(url, "_blank")
+  window.open(url, "_blank")
 
     setCarrinho([])
     setNome("")
