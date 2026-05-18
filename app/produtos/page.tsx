@@ -123,10 +123,9 @@ export default function Produtos() {
       Math.floor(Math.random() * 99999)
 
     const pedidoTexto = carrinho
-      .map(
-        (item) =>
-          `🥩 ${item.nome} x${item.quantidade}`
-      )
+      .map(function(item) {
+        return item.nome + " x" + item.quantidade
+      })
       .join("%0A")
 
     await supabase.from("pedidos").insert([
@@ -140,39 +139,40 @@ export default function Produtos() {
       },
     ])
 
-    const mensagem = `
-🥩 *Pedido realizado com sucesso!*
+    const mensagem =
+      "Pedido realizado com sucesso!%0A%0A" +
 
-📦 Pedido #${numeroPedido}
+      "Pedido #" + numeroPedido + "%0A%0A" +
 
------------------------------------
+      "----------------------------%0A%0A" +
 
-${pedidoTexto}
+      "DETALHES DO PEDIDO%0A%0A" +
 
------------------------------------
+      pedidoTexto + "%0A%0A" +
 
-💰 Total: R$ ${total.toFixed(2)}
+      "----------------------------%0A%0A" +
 
-📍 Endereço:
-${endereco}
+      "Total: R$ " + total.toFixed(2) + "%0A%0A" +
 
-📞 Telefone:
-${telefone}
+      "Endereco:%0A" +
+      endereco + "%0A%0A" +
 
-💳 Forma de pagamento:
-PIX ou Dinheiro
+      "Telefone:%0A" +
+      telefone + "%0A%0A" +
 
-🚚 Entrega estimada:
-40 minutos
+      "Forma de pagamento:%0A" +
+      "PIX ou Dinheiro%0A%0A" +
 
-Obrigado pela preferência ❤️
-`
+      "Entrega estimada:%0A" +
+      "40 minutos%0A%0A" +
 
-    window.open(
-      `https://wa.me/55${telefone}?text=${mensagem}`
-    )
+      "Obrigado pela preferencia!"
 
-    alert("Pedido realizado com sucesso!")
+    const url =
+      "https://api.whatsapp.com/send?phone=5512988736751&text=" +
+      mensagem
+
+    window.open(url, "_blank")
 
     setCarrinho([])
     setNome("")
