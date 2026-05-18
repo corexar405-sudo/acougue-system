@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 import { supabase } from "../../lib/supabase"
 import { useRouter } from "next/navigation"
 
@@ -119,27 +120,27 @@ export default function Produtos() {
 
   async function finalizarPedido() {
 
-  const numeroPedido =
-    Math.floor(Math.random() * 99999)
+    const numeroPedido =
+      Math.floor(Math.random() * 99999)
 
-  const pedidoTexto = carrinho
-    .map((item) =>
-      `${item.nome} x${item.quantidade}`
-    )
-    .join("\n")
+    const pedidoTexto = carrinho
+      .map((item) =>
+        `${item.nome} x${item.quantidade}`
+      )
+      .join("\n")
 
-  await supabase.from("pedidos").insert([
-    {
-      cliente: nome,
-      endereco,
-      telefone,
-      pedido: pedidoTexto,
-      total,
-      status: "aguardando",
-    },
-  ])
+    await supabase.from("pedidos").insert([
+      {
+        cliente: nome,
+        endereco,
+        telefone,
+        pedido: pedidoTexto,
+        total,
+        status: "aguardando",
+      },
+    ])
 
-  const mensagem = `
+    const mensagem = `
 Pedido realizado com sucesso!
 
 Pedido #${numeroPedido}
@@ -169,11 +170,11 @@ Entrega estimada:
 Obrigado pela preferencia!
 `
 
-  const url =
-    "https://api.whatsapp.com/send?phone=5512988736751&text=" +
-    encodeURIComponent(mensagem)
+    const url =
+      "https://api.whatsapp.com/send?phone=5512988736751&text=" +
+      encodeURIComponent(mensagem)
 
-  window.open(url, "_blank")
+    window.open(url, "_blank")
 
     setCarrinho([])
     setNome("")
@@ -207,9 +208,13 @@ Obrigado pela preferencia!
 
           <div>
 
-            <h1 className="text-3xl font-black text-red-600">
+            <motion.h1
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl font-black text-red-600"
+            >
               Açougue Premium
-            </h1>
+            </motion.h1>
 
             <p className="text-zinc-400 text-sm">
               Carnes frescas todos os dias
@@ -219,14 +224,16 @@ Obrigado pela preferencia!
 
           <div className="flex items-center gap-4">
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() =>
                 setAbrirCarrinho(true)
               }
               className="bg-red-600 px-5 py-3 rounded-2xl font-bold"
             >
               Carrinho ({carrinho.length})
-            </button>
+            </motion.button>
 
             <button
               onClick={() =>
@@ -265,22 +272,35 @@ Obrigado pela preferencia!
         </div>
       </header>
 
-      <div className="relative h-[350px]">
+      <div className="relative h-[350px] overflow-hidden">
 
-        <img
+        <motion.img
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2 }}
           src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
           className="w-full h-full object-cover opacity-40"
         />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center">
 
-          <h1 className="text-5xl md:text-7xl font-black text-red-600">
+          <motion.h1
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-7xl font-black text-red-600"
+          >
             Açougue Premium
-          </h1>
+          </motion.h1>
 
-          <p className="text-zinc-300 mt-4 text-xl">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-zinc-300 mt-4 text-xl"
+          >
             Carnes frescas entregues na sua casa
-          </p>
+          </motion.p>
 
         </div>
       </div>
@@ -295,9 +315,16 @@ Obrigado pela preferencia!
 
           {produtos.map((produto, index) => (
 
-            <div
+            <motion.div
               key={index}
-              className="bg-zinc-900 rounded-3xl overflow-hidden hover:scale-105 transition"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{
+                scale: 1.05,
+                y: -8,
+              }}
+              className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 hover:border-red-600 transition-all duration-300 shadow-xl hover:shadow-red-900/40"
             >
 
               <img
@@ -319,17 +346,20 @@ Obrigado pela preferencia!
                   R$ {produto.preco}
                 </p>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.92 }}
                   onClick={() =>
                     adicionarCarrinho(produto)
                   }
                   className="bg-red-600 hover:bg-red-700 transition w-full mt-6 py-4 rounded-2xl font-bold text-xl"
                 >
                   Comprar
-                </button>
+                </motion.button>
 
               </div>
-            </div>
+
+            </motion.div>
 
           ))}
 
@@ -338,9 +368,18 @@ Obrigado pela preferencia!
 
       {abrirCarrinho && (
 
-        <div className="fixed inset-0 bg-black/70 z-50 flex justify-end">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/70 z-50 flex justify-end"
+        >
 
-          <div className="bg-zinc-950 w-full md:w-[500px] h-screen p-6 overflow-y-auto">
+          <motion.div
+            initial={{ x: 500 }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            className="bg-zinc-950 w-full md:w-[500px] h-screen p-6 overflow-y-auto"
+          >
 
             <div className="flex items-center justify-between mb-8">
 
@@ -361,8 +400,10 @@ Obrigado pela preferencia!
 
             {carrinho.map((item, index) => (
 
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
                 className="bg-zinc-900 p-4 rounded-2xl mb-4"
               >
 
@@ -406,7 +447,7 @@ Obrigado pela preferencia!
 
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
             ))}
 
@@ -446,23 +487,29 @@ Obrigado pela preferencia!
                 className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
               />
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={finalizarPedido}
                 className="bg-green-600 hover:bg-green-700 transition w-full py-5 rounded-2xl font-black text-2xl"
               >
                 Finalizar Pedido
-              </button>
+              </motion.button>
 
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
       {abrirAdmin && (
 
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
 
-          <div className="bg-zinc-950 p-8 rounded-3xl w-[400px]">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-zinc-950 p-8 rounded-3xl w-[400px]"
+          >
 
             <h2 className="text-3xl font-black mb-6 text-center">
               Login Admin
@@ -507,20 +554,25 @@ Obrigado pela preferencia!
               </button>
 
             </div>
-          </div>
+
+          </motion.div>
         </div>
       )}
 
       {carrinho.length > 0 && (
 
-        <button
+        <motion.button
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() =>
             setAbrirCarrinho(true)
           }
           className="fixed bottom-6 right-6 bg-red-600 px-6 py-4 rounded-full text-xl font-bold shadow-2xl z-50"
         >
           Ver Carrinho ({carrinho.length})
-        </button>
+        </motion.button>
 
       )}
 
