@@ -60,6 +60,45 @@ export default function Produtos() {
 
   return (
     <main className="min-h-screen bg-black text-white">
+    <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+  <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+    <div>
+      <h1 className="text-3xl font-black text-red-600">
+        Açougue Premium
+      </h1>
+
+      <p className="text-zinc-400 text-sm">
+        Carnes frescas todos os dias
+      </p>
+    </div>
+
+    <button className="bg-red-600 px-5 py-3 rounded-2xl font-bold">
+      Carrinho ({carrinho.length})
+    </button>
+  </div>
+
+  <div className="flex gap-3 overflow-x-auto px-4 pb-4">
+    <button className="bg-red-600 px-4 py-2 rounded-xl whitespace-nowrap">
+      Promoções
+    </button>
+
+    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+      Bovinos
+    </button>
+
+    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+      Frango
+    </button>
+
+    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+      Suínos
+    </button>
+
+    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+      Churrasco
+    </button>
+  </div>
+</header>
       <div className="relative h-[350px]">
         <img
           src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
