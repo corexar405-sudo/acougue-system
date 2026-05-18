@@ -14,6 +14,7 @@ export default function Admin() {
     const { data } = await supabase
       .from("pedidos")
       .select("*")
+      .neq("status", "finalizado")
       .order("id", { ascending: false })
 
     if (data) {
@@ -31,20 +32,37 @@ export default function Admin() {
       .eq("id", id)
 
     carregarPedidos()
+
+    if (status === "entregue") {
+      setTimeout(async () => {
+        await supabase
+          .from("pedidos")
+          .update({
+            status: "finalizado",
+          })
+          .eq("id", id)
+
+        carregarPedidos()
+      }, 60000)
+    }
   }
 
   return (
     <main className="min-h-screen bg-black text-white p-10">
+
       <h1 className="text-5xl font-bold text-red-600 mb-10">
         Painel Admin
       </h1>
 
       <div className="space-y-6">
+
         {pedidos.map((pedido) => (
+
           <div
             key={pedido.id}
             className="bg-zinc-900 p-6 rounded-2xl"
           >
+
             <h2 className="text-2xl font-bold">
               {pedido.cliente}
             </h2>
@@ -73,6 +91,7 @@ export default function Admin() {
             </p>
 
             <div className="flex gap-4 mt-6">
+
               <button
                 onClick={() =>
                   atualizarStatus(
@@ -104,9 +123,12 @@ export default function Admin() {
               >
                 WhatsApp
               </a>
+
             </div>
           </div>
+
         ))}
+
       </div>
     </main>
   )

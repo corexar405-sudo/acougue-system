@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabase"
 import { useRouter } from "next/navigation"
 
 export default function Produtos() {
+
   const [produtos, setProdutos] = useState<any[]>([])
   const [carrinho, setCarrinho] = useState<any[]>([])
 
@@ -25,6 +26,7 @@ export default function Produtos() {
   }, [])
 
   async function carregarProdutos() {
+
     const { data } = await supabase
       .from("produtos")
       .select("*")
@@ -35,19 +37,26 @@ export default function Produtos() {
   }
 
   function adicionarCarrinho(produto: any) {
+
     const itemExistente = carrinho.find(
       (item) => item.id === produto.id
     )
 
     if (itemExistente) {
+
       const novoCarrinho = carrinho.map((item) =>
         item.id === produto.id
-          ? { ...item, quantidade: item.quantidade + 1 }
+          ? {
+              ...item,
+              quantidade: item.quantidade + 1,
+            }
           : item
       )
 
       setCarrinho(novoCarrinho)
+
     } else {
+
       setCarrinho([
         ...carrinho,
         {
@@ -59,9 +68,13 @@ export default function Produtos() {
   }
 
   function aumentarQuantidade(id: number) {
+
     const novoCarrinho = carrinho.map((item) =>
       item.id === id
-        ? { ...item, quantidade: item.quantidade + 1 }
+        ? {
+            ...item,
+            quantidade: item.quantidade + 1,
+          }
         : item
     )
 
@@ -69,20 +82,27 @@ export default function Produtos() {
   }
 
   function diminuirQuantidade(id: number) {
+
     const itemExistente = carrinho.find(
       (item) => item.id === id
     )
 
     if (itemExistente.quantidade === 1) {
+
       const novoCarrinho = carrinho.filter(
         (item) => item.id !== id
       )
 
       setCarrinho(novoCarrinho)
+
     } else {
+
       const novoCarrinho = carrinho.map((item) =>
         item.id === id
-          ? { ...item, quantidade: item.quantidade - 1 }
+          ? {
+              ...item,
+              quantidade: item.quantidade - 1,
+            }
           : item
       )
 
@@ -92,17 +112,22 @@ export default function Produtos() {
 
   const total = carrinho.reduce(
     (acc, item) =>
-      acc + Number(item.preco) * item.quantidade,
+      acc +
+      Number(item.preco) * item.quantidade,
     0
   )
 
   async function finalizarPedido() {
+
+    const numeroPedido =
+      Math.floor(Math.random() * 99999)
+
     const pedidoTexto = carrinho
       .map(
         (item) =>
-          `${item.nome} x${item.quantidade}`
+          `🥩 ${item.nome} x${item.quantidade}`
       )
-      .join(", ")
+      .join("%0A")
 
     await supabase.from("pedidos").insert([
       {
@@ -115,6 +140,38 @@ export default function Produtos() {
       },
     ])
 
+    const mensagem = `
+🥩 *Pedido realizado com sucesso!*
+
+📦 Pedido #${numeroPedido}
+
+-----------------------------------
+
+${pedidoTexto}
+
+-----------------------------------
+
+💰 Total: R$ ${total.toFixed(2)}
+
+📍 Endereço:
+${endereco}
+
+📞 Telefone:
+${telefone}
+
+💳 Forma de pagamento:
+PIX ou Dinheiro
+
+🚚 Entrega estimada:
+40 minutos
+
+Obrigado pela preferência ❤️
+`
+
+    window.open(
+      `https://wa.me/55${telefone}?text=${mensagem}`
+    )
+
     alert("Pedido realizado com sucesso!")
 
     setCarrinho([])
@@ -125,6 +182,7 @@ export default function Produtos() {
   }
 
   async function loginAdmin() {
+
     const { error } =
       await supabase.auth.signInWithPassword({
         email: emailAdmin,
@@ -147,6 +205,7 @@ export default function Produtos() {
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
 
           <div>
+
             <h1 className="text-3xl font-black text-red-600">
               Açougue Premium
             </h1>
@@ -154,26 +213,30 @@ export default function Produtos() {
             <p className="text-zinc-400 text-sm">
               Carnes frescas todos os dias
             </p>
+
           </div>
 
           <div className="flex items-center gap-4">
 
             <button
-              onClick={() => setAbrirCarrinho(true)}
+              onClick={() =>
+                setAbrirCarrinho(true)
+              }
               className="bg-red-600 px-5 py-3 rounded-2xl font-bold"
             >
               Carrinho ({carrinho.length})
             </button>
 
             <button
-              onClick={() => setAbrirAdmin(true)}
+              onClick={() =>
+                setAbrirAdmin(true)
+              }
               className="text-zinc-500 text-2xl"
             >
               ⚙️
             </button>
 
           </div>
-
         </div>
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
@@ -256,7 +319,9 @@ export default function Produtos() {
                 </p>
 
                 <button
-                  onClick={() => adicionarCarrinho(produto)}
+                  onClick={() =>
+                    adicionarCarrinho(produto)
+                  }
                   className="bg-red-600 hover:bg-red-700 transition w-full mt-6 py-4 rounded-2xl font-bold text-xl"
                 >
                   Comprar
@@ -283,7 +348,9 @@ export default function Produtos() {
               </h2>
 
               <button
-                onClick={() => setAbrirCarrinho(false)}
+                onClick={() =>
+                  setAbrirCarrinho(false)
+                }
                 className="bg-red-600 px-4 py-2 rounded-xl"
               >
                 Fechar
@@ -337,7 +404,6 @@ export default function Produtos() {
                     </button>
 
                   </div>
-
                 </div>
               </div>
 
@@ -353,7 +419,9 @@ export default function Produtos() {
                 type="text"
                 placeholder="Seu nome"
                 value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                onChange={(e) =>
+                  setNome(e.target.value)
+                }
                 className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
               />
 
@@ -361,7 +429,9 @@ export default function Produtos() {
                 type="text"
                 placeholder="Endereço"
                 value={endereco}
-                onChange={(e) => setEndereco(e.target.value)}
+                onChange={(e) =>
+                  setEndereco(e.target.value)
+                }
                 className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
               />
 
@@ -369,7 +439,9 @@ export default function Produtos() {
                 type="text"
                 placeholder="Telefone"
                 value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
+                onChange={(e) =>
+                  setTelefone(e.target.value)
+                }
                 className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
               />
 
@@ -386,6 +458,7 @@ export default function Produtos() {
       )}
 
       {abrirAdmin && (
+
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
 
           <div className="bg-zinc-950 p-8 rounded-3xl w-[400px]">
@@ -424,7 +497,9 @@ export default function Produtos() {
               </button>
 
               <button
-                onClick={() => setAbrirAdmin(false)}
+                onClick={() =>
+                  setAbrirAdmin(false)
+                }
                 className="bg-zinc-800 w-full py-4 rounded-2xl font-bold"
               >
                 Fechar
@@ -436,12 +511,16 @@ export default function Produtos() {
       )}
 
       {carrinho.length > 0 && (
+
         <button
-          onClick={() => setAbrirCarrinho(true)}
+          onClick={() =>
+            setAbrirCarrinho(true)
+          }
           className="fixed bottom-6 right-6 bg-red-600 px-6 py-4 rounded-full text-xl font-bold shadow-2xl z-50"
         >
           Ver Carrinho ({carrinho.length})
         </button>
+
       )}
 
     </main>
