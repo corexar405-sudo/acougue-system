@@ -10,6 +10,7 @@ export default function Produtos() {
   const [nome, setNome] = useState("")
   const [endereco, setEndereco] = useState("")
   const [telefone, setTelefone] = useState("")
+  const [abrirCarrinho, setAbrirCarrinho] = useState(false)
 
   useEffect(() => {
     carregarProdutos()
@@ -27,6 +28,12 @@ export default function Produtos() {
 
   function adicionarCarrinho(produto: any) {
     setCarrinho([...carrinho, produto])
+  }
+
+  function removerCarrinho(index: number) {
+    const novoCarrinho = [...carrinho]
+    novoCarrinho.splice(index, 1)
+    setCarrinho(novoCarrinho)
   }
 
   const total = carrinho.reduce(
@@ -56,49 +63,55 @@ export default function Produtos() {
     setNome("")
     setEndereco("")
     setTelefone("")
+    setAbrirCarrinho(false)
   }
 
   return (
     <main className="min-h-screen bg-black text-white">
-    <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
-  <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
-    <div>
-      <h1 className="text-3xl font-black text-red-600">
-        Açougue Premium
-      </h1>
 
-      <p className="text-zinc-400 text-sm">
-        Carnes frescas todos os dias
-      </p>
-    </div>
+      <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+          <div>
+            <h1 className="text-3xl font-black text-red-600">
+              Açougue Premium
+            </h1>
 
-    <button className="bg-red-600 px-5 py-3 rounded-2xl font-bold">
-      Carrinho ({carrinho.length})
-    </button>
-  </div>
+            <p className="text-zinc-400 text-sm">
+              Carnes frescas todos os dias
+            </p>
+          </div>
 
-  <div className="flex gap-3 overflow-x-auto px-4 pb-4">
-    <button className="bg-red-600 px-4 py-2 rounded-xl whitespace-nowrap">
-      Promoções
-    </button>
+          <button
+            onClick={() => setAbrirCarrinho(true)}
+            className="bg-red-600 px-5 py-3 rounded-2xl font-bold"
+          >
+            Carrinho ({carrinho.length})
+          </button>
+        </div>
 
-    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
-      Bovinos
-    </button>
+        <div className="flex gap-3 overflow-x-auto px-4 pb-4">
+          <button className="bg-red-600 px-4 py-2 rounded-xl whitespace-nowrap">
+            Promoções
+          </button>
 
-    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
-      Frango
-    </button>
+          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+            Bovinos
+          </button>
 
-    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
-      Suínos
-    </button>
+          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+            Frango
+          </button>
 
-    <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
-      Churrasco
-    </button>
-  </div>
-</header>
+          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+            Suínos
+          </button>
+
+          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+            Churrasco
+          </button>
+        </div>
+      </header>
+
       <div className="relative h-[350px]">
         <img
           src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
@@ -117,6 +130,7 @@ export default function Produtos() {
       </div>
 
       <div className="p-6 md:p-10">
+
         <h2 className="text-4xl font-bold mb-8">
           Produtos
         </h2>
@@ -146,9 +160,7 @@ export default function Produtos() {
                 </p>
 
                 <button
-                  onClick={() =>
-                    adicionarCarrinho(produto)
-                  }
+                  onClick={() => adicionarCarrinho(produto)}
                   className="bg-red-600 hover:bg-red-700 transition w-full mt-6 py-4 rounded-2xl font-bold text-xl"
                 >
                   Comprar
@@ -157,65 +169,95 @@ export default function Produtos() {
             </div>
           ))}
         </div>
+      </div>
 
-        <div className="mt-14 bg-zinc-900 p-8 rounded-3xl">
-          <h2 className="text-4xl font-bold mb-6">
-            Carrinho
-          </h2>
+      {abrirCarrinho && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex justify-end">
+          <div className="bg-zinc-950 w-full md:w-[500px] h-screen p-6 overflow-y-auto">
 
-          {carrinho.map((item, index) => (
-            <div
-              key={index}
-              className="flex justify-between border-b border-zinc-700 py-4"
-            >
-              <p className="text-lg">
-                {item.nome}
-              </p>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-4xl font-bold">
+                Carrinho
+              </h2>
 
-              <p className="text-lg text-green-400">
-                R$ {item.preco}
-              </p>
+              <button
+                onClick={() => setAbrirCarrinho(false)}
+                className="bg-red-600 px-4 py-2 rounded-xl"
+              >
+                Fechar
+              </button>
             </div>
-          ))}
 
-          <h3 className="text-3xl mt-8 font-black text-green-400">
-            Total: R$ {total.toFixed(2)}
-          </h3>
+            {carrinho.map((item, index) => (
+              <div
+                key={index}
+                className="bg-zinc-900 p-4 rounded-2xl mb-4"
+              >
+                <div className="flex items-center justify-between">
 
-          <div className="mt-8 space-y-5">
-            <input
-              type="text"
-              placeholder="Seu nome"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
-            />
+                  <div>
+                    <p className="text-xl font-bold">
+                      {item.nome}
+                    </p>
 
-            <input
-              type="text"
-              placeholder="Endereço"
-              value={endereco}
-              onChange={(e) => setEndereco(e.target.value)}
-              className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
-            />
+                    <p className="text-green-400 mt-1">
+                      R$ {item.preco}
+                    </p>
+                  </div>
 
-            <input
-              type="text"
-              placeholder="Telefone"
-              value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
-              className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
-            />
+                  <button
+                    onClick={() => removerCarrinho(index)}
+                    className="bg-red-600 px-3 py-2 rounded-xl"
+                  >
+                    Remover
+                  </button>
 
-            <button
-              onClick={finalizarPedido}
-              className="bg-green-600 hover:bg-green-700 transition w-full py-5 rounded-2xl font-black text-2xl"
-            >
-              Finalizar Pedido
-            </button>
+                </div>
+              </div>
+            ))}
+
+            <h3 className="text-3xl mt-8 font-black text-green-400">
+              Total: R$ {total.toFixed(2)}
+            </h3>
+
+            <div className="mt-8 space-y-5">
+
+              <input
+                type="text"
+                placeholder="Seu nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
+              />
+
+              <input
+                type="text"
+                placeholder="Endereço"
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+                className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
+              />
+
+              <input
+                type="text"
+                placeholder="Telefone"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
+                className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
+              />
+
+              <button
+                onClick={finalizarPedido}
+                className="bg-green-600 hover:bg-green-700 transition w-full py-5 rounded-2xl font-black text-2xl"
+              >
+                Finalizar Pedido
+              </button>
+
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
     </main>
   )
 }
