@@ -116,64 +116,64 @@ export default function Produtos() {
 
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
 
-          <div>
+  <div>
 
-            <h1 className="text-4xl font-black text-red-600">
-              Açougue Premium
-            </h1>
+    <h1 className="text-4xl font-black text-red-600">
+      Açougue Premium
+    </h1>
 
-            <p className="text-zinc-400">
-              Carnes frescas todos os dias
-            </p>
+    <p className="text-zinc-400">
+      Carnes frescas todos os dias
+    </p>
 
-          </div>
+  </div>
 
-          <div className="flex items-center gap-4">
+  <div className="flex items-center gap-4">
 
-            <a
-              href="/login"
-              className="
-                bg-zinc-800
-                hover:bg-zinc-700
-                px-5
-                py-3
-                rounded-2xl
-                font-bold
-                transition
-              "
-            >
-              Admin
-            </a>
+    <a
+      href="/login"
+      className="
+        bg-zinc-800
+        hover:bg-zinc-700
+        px-5
+        py-3
+        rounded-2xl
+        font-bold
+        transition
+      "
+    >
+      Admin
+    </a>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() =>
-                setAbrirCarrinho(true)
-              }
-              className="
-                bg-red-600
-                px-6
-                py-4
-                rounded-2xl
-                font-bold
-                shadow-2xl
-              "
-            >
-              Carrinho (
-              {
-                carrinho.reduce(
-                  (acc, item) =>
-                    acc + item.quantidade,
-                  0
-                )
-              }
-              )
-            </motion.button>
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() =>
+        setAbrirCarrinho(true)
+      }
+      className="
+        bg-red-600
+        px-6
+        py-4
+        rounded-2xl
+        font-bold
+        shadow-2xl
+      "
+    >
+      Carrinho (
+      {
+        carrinho.reduce(
+          (acc, item) =>
+            acc + item.quantidade,
+          0
+        )
+      }
+      )
+    </motion.button>
 
-          </div>
+  </div>
 
-        </div>
+</div>
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
 
