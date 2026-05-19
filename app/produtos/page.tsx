@@ -43,14 +43,14 @@ export default function Produtos() {
 
     const itemExistente = carrinho.find(
   (item) =>
-    item.nome === produto.nome &&
+    item.id === produto.id &&
     item.preco === produto.preco
 )
 
     if (itemExistente) {
 
       const novoCarrinho = carrinho.map((item) =>
-        item.nome === produto.nome &&
+        item.id === produto.id &&
 item.preco === produto.preco
           ? {
               ...item,
@@ -73,10 +73,10 @@ item.preco === produto.preco
     }
   }
 
-  function aumentarQuantidade(id: string) {
+  function aumentarQuantidade(id: number) {
 
     const novoCarrinho = carrinho.map((item) =>
-      item.nome === id
+      item.id === id
         ? {
             ...item,
             quantidade: item.quantidade + 1,
@@ -87,7 +87,7 @@ item.preco === produto.preco
     setCarrinho(novoCarrinho)
   }
 
-  function diminuirQuantidade(id: string) {
+  function diminuirQuantidade(id: number) {
 
     const itemExistente = carrinho.find(
       (item) => item.id === id
@@ -560,7 +560,7 @@ Obrigado pela preferencia!
 
                     <button
                       onClick={() =>
-                        diminuirQuantidade(item.nome)
+                        diminuirQuantidade(item.id)
                       }
                       className="bg-red-600 w-10 h-10 rounded-xl"
                     >
@@ -573,7 +573,7 @@ Obrigado pela preferencia!
 
                     <button
                       onClick={() =>
-                        aumentarQuantidade(item.nome)
+                        aumentarQuantidade(item.id)
                       }
                       className="bg-green-600 w-10 h-10 rounded-xl"
                     >
