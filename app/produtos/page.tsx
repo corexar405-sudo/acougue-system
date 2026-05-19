@@ -116,64 +116,64 @@ export default function Produtos() {
 
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
 
-  <div>
+          <div>
 
-    <h1 className="text-4xl font-black text-red-600">
-      Açougue Premium
-    </h1>
+            <h1 className="text-4xl font-black text-red-600">
+              Açougue Premium
+            </h1>
 
-    <p className="text-zinc-400">
-      Carnes frescas todos os dias
-    </p>
+            <p className="text-zinc-400">
+              Carnes frescas todos os dias
+            </p>
 
-  </div>
+          </div>
 
-  <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
 
-    <a
-      href="/login"
-      className="
-        bg-zinc-800
-        hover:bg-zinc-700
-        px-5
-        py-3
-        rounded-2xl
-        font-bold
-        transition
-      "
-    >
-      Admin
-    </a>
+            <a
+              href="/login"
+              className="
+                bg-zinc-800
+                hover:bg-zinc-700
+                px-5
+                py-3
+                rounded-2xl
+                font-bold
+                transition
+              "
+            >
+              Admin
+            </a>
 
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() =>
-        setAbrirCarrinho(true)
-      }
-      className="
-        bg-red-600
-        px-6
-        py-4
-        rounded-2xl
-        font-bold
-        shadow-2xl
-      "
-    >
-      Carrinho (
-      {
-        carrinho.reduce(
-          (acc, item) =>
-            acc + item.quantidade,
-          0
-        )
-      }
-      )
-    </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() =>
+                setAbrirCarrinho(true)
+              }
+              className="
+                bg-red-600
+                px-6
+                py-4
+                rounded-2xl
+                font-bold
+                shadow-2xl
+              "
+            >
+              Carrinho (
+              {
+                carrinho.reduce(
+                  (acc, item) =>
+                    acc + item.quantidade,
+                  0
+                )
+              }
+              )
+            </motion.button>
 
-  </div>
+          </div>
 
-</div>
+        </div>
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
 
@@ -216,7 +216,20 @@ export default function Produtos() {
 
       </header>
 
-      <div className="relative h-[340px] overflow-hidden">
+      <motion.div
+        initial={{
+          opacity: 0,
+          scale: 1.1,
+        }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+        }}
+        transition={{
+          duration: 1,
+        }}
+        className="relative h-[340px] overflow-hidden"
+      >
 
         <img
           src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
@@ -227,17 +240,41 @@ export default function Produtos() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
 
-          <h1 className="text-5xl md:text-7xl font-black text-red-600">
+          <motion.h1
+            initial={{
+              opacity: 0,
+              y: -40,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.8,
+            }}
+            className="text-5xl md:text-7xl font-black text-red-600"
+          >
             Açougue Premium
-          </h1>
+          </motion.h1>
 
-          <p className="text-zinc-200 mt-4 text-xl">
+          <motion.p
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            transition={{
+              delay: 0.5,
+            }}
+            className="text-zinc-200 mt-4 text-xl"
+          >
             🔥 Promoções frescas todos os dias
-          </p>
+          </motion.p>
 
         </div>
 
-      </div>
+      </motion.div>
 
       <div
         id="promocoes"
@@ -293,18 +330,36 @@ export default function Produtos() {
 
                   <motion.div
                     key={index}
+                    initial={{
+                      opacity: 0,
+                      y: 60,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.6,
+                      delay: index * 0.1,
+                    }}
                     whileHover={{
                       scale: 1.04,
+                      y: -12,
                     }}
                     className="
                       bg-zinc-900
                       rounded-[35px]
                       overflow-hidden
                       border border-red-900/40
+                      shadow-2xl
                     "
                   >
 
-                    <img
+                    <motion.img
+                      whileHover={{
+                        scale: 1.1,
+                      }}
                       src={produto.imagem}
                       alt={produto.nome}
                       className="w-full h-72 object-cover"
@@ -354,7 +409,13 @@ export default function Produtos() {
 
                       )}
 
-                      <button
+                      <motion.button
+                        whileHover={{
+                          scale: 1.05,
+                        }}
+                        whileTap={{
+                          scale: 0.95,
+                        }}
                         onClick={() =>
                           adicionarCarrinho(produto)
                         }
@@ -370,7 +431,7 @@ export default function Produtos() {
                         "
                       >
                         Comprar
-                      </button>
+                      </motion.button>
 
                     </div>
 
@@ -388,9 +449,15 @@ export default function Produtos() {
 
       {abrirCarrinho && (
 
-        <div className="fixed inset-0 bg-black/70 z-50 flex justify-end">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/70 z-50 flex justify-end"
+        >
 
-          <div
+          <motion.div
+            initial={{ x: 500 }}
+            animate={{ x: 0 }}
             className="
               bg-zinc-950
               w-full
@@ -495,7 +562,13 @@ export default function Produtos() {
                 className="bg-zinc-800 p-4 rounded-2xl w-full"
               />
 
-              <button
+              <motion.button
+                whileHover={{
+                  scale: 1.02,
+                }}
+                whileTap={{
+                  scale: 0.97,
+                }}
                 className="
                   bg-green-600
                   hover:bg-green-700
@@ -507,13 +580,13 @@ export default function Produtos() {
                 "
               >
                 Finalizar Pedido
-              </button>
+              </motion.button>
 
             </div>
 
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
       )}
 
