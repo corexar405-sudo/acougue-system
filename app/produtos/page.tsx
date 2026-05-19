@@ -179,21 +179,23 @@ Obrigado pela preferencia!
 
       <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
 
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+        <div className="flex items-center gap-4">
 
-          <div>
+  <a
+    href="/admin"
+    className="
+      bg-zinc-800
+      px-4
+      py-2
+      rounded-xl
+      text-sm
+      hover:bg-zinc-700
+    "
+  >
+    Admin
+  </a>
 
-            <h1 className="text-4xl font-black text-red-600">
-              Açougue Premium
-            </h1>
-
-            <p className="text-zinc-400">
-              Carnes frescas todos os dias
-            </p>
-
-          </div>
-
-          <motion.button
+  <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() =>
