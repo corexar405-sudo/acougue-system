@@ -33,6 +33,8 @@ export default function Produtos() {
 
   function adicionarCarrinho(produto: any) {
 
+    if (produto.estoque <= 0) return
+
     setToast(`${produto.nome} adicionado ao carrinho`)
 
     setTimeout(() => {
@@ -210,23 +212,58 @@ Obrigado pela preferencia!
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
 
-          <button className="bg-red-600 px-5 py-3 rounded-2xl">
+          <button
+            onClick={() =>
+              document.getElementById("promocoes")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="bg-red-600 px-5 py-3 rounded-2xl font-bold whitespace-nowrap"
+          >
             Promoções
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
+          <button
+            onClick={() =>
+              document.getElementById("bovinos")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+          >
             Bovinos
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
+          <button
+            onClick={() =>
+              document.getElementById("frango")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+          >
             Frango
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
+          <button
+            onClick={() =>
+              document.getElementById("suinos")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+          >
             Suínos
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
+          <button
+            onClick={() =>
+              document.getElementById("churrasco")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+          >
             Churrasco
           </button>
 
@@ -275,106 +312,197 @@ Obrigado pela preferencia!
             🔥 Promoções frescas todos os dias
           </motion.p>
 
-          <motion.div
-            animate={{
-              opacity: [0.7, 1, 0.7],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 2,
-            }}
-            className="
-              mt-8
-              bg-red-600
-              px-8
-              py-4
-              rounded-2xl
-              font-black
-              text-xl
-              shadow-2xl
-            "
-          >
-            Entrega Rápida 🚀
-          </motion.div>
-
         </div>
 
       </div>
 
-      <div className="p-6 md:p-10 pb-40 bg-gradient-to-b from-black via-zinc-950 to-black">
+      <div
+        id="promocoes"
+        className="p-6 md:p-10 pb-40 bg-gradient-to-b from-black via-zinc-950 to-black"
+      >
 
         <h2 className="text-5xl font-black mb-12 text-center">
           🔥 Produtos Premium
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {[
+          {
+            id: "bovinos",
+            titulo: "🥩 Bovinos",
+            categoria: "bovinos",
+          },
+          {
+            id: "frango",
+            titulo: "🍗 Frango",
+            categoria: "frango",
+          },
+          {
+            id: "suinos",
+            titulo: "🐷 Suínos",
+            categoria: "suinos",
+          },
+          {
+            id: "churrasco",
+            titulo: "🔥 Churrasco",
+            categoria: "churrasco",
+          },
+        ].map((secao) => (
 
-          {produtos.map((produto, index) => (
+          <div
+            key={secao.id}
+            id={secao.id}
+            className="mb-24"
+          >
 
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{
-                scale: 1.04,
-                y: -10,
-              }}
-              className="
-                bg-zinc-900
-                rounded-[35px]
-                overflow-hidden
-                border border-red-900/40
-                shadow-2xl
-              "
-            >
+            <h2 className="text-4xl font-black mb-8">
+              {secao.titulo}
+            </h2>
 
-              <motion.img
-                whileHover={{ scale: 1.1 }}
-                src={
-                  produto.imagem ||
-                  "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
-                }
-                alt={produto.nome}
-                className="w-full h-72 object-cover"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-              <div className="p-7">
+              {produtos
+                .filter(
+                  (produto) =>
+                    produto.categoria ===
+                    secao.categoria
+                )
+                .map((produto, index) => (
 
-                <h2 className="text-4xl font-black capitalize">
-                  {produto.nome}
-                </h2>
+                  <motion.div
+                    key={index}
+                    whileHover={{
+                      scale: 1.04,
+                      y: -10,
+                    }}
+                    className="
+                      bg-zinc-900
+                      rounded-[35px]
+                      overflow-hidden
+                      border border-red-900/40
+                      shadow-2xl
+                    "
+                  >
 
-                <p className="text-green-400 text-4xl font-black mt-5">
-                  R$ {produto.preco}
-                </p>
+                    <motion.img
+                      whileHover={{
+                        scale: 1.1,
+                      }}
+                      src={produto.imagem}
+                      alt={produto.nome}
+                      className="w-full h-72 object-cover"
+                    />
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={() =>
-                    adicionarCarrinho(produto)
-                  }
-                  className="
-                    bg-red-600
-                    hover:bg-red-700
-                    w-full
-                    mt-6
-                    py-4
-                    rounded-2xl
-                    font-black
-                    text-xl
-                  "
-                >
-                  Comprar
-                </motion.button>
+                    <div className="p-7">
 
-              </div>
+                      <h2 className="text-4xl font-black capitalize">
+                        {produto.nome}
+                      </h2>
 
-            </motion.div>
+                      <p className="text-green-400 text-4xl font-black mt-5">
+                        R$ {produto.preco}
+                      </p>
 
-          ))}
+                      {produto.estoque <= 0 ? (
 
-        </div>
+                        <div
+                          className="
+                            bg-red-900
+                            text-red-200
+                            mt-4
+                            p-3
+                            rounded-xl
+                            text-center
+                            font-bold
+                          "
+                        >
+                          ❌ Sem estoque
+                        </div>
+
+                      ) : produto.estoque <= 5 ? (
+
+                        <div
+                          className="
+                            bg-yellow-700
+                            text-yellow-100
+                            mt-4
+                            p-3
+                            rounded-xl
+                            text-center
+                            font-bold
+                          "
+                        >
+                          ⚠️ Últimas {produto.estoque} unidades
+                        </div>
+
+                      ) : (
+
+                        <div
+                          className="
+                            bg-green-700
+                            text-green-100
+                            mt-4
+                            p-3
+                            rounded-xl
+                            text-center
+                            font-bold
+                          "
+                        >
+                          ✅ {produto.estoque} disponíveis
+                        </div>
+
+                      )}
+
+                      <motion.button
+                        whileHover={{
+                          scale:
+                            produto.estoque <= 0
+                              ? 1
+                              : 1.05,
+                        }}
+                        whileTap={{
+                          scale:
+                            produto.estoque <= 0
+                              ? 1
+                              : 0.92,
+                        }}
+                        disabled={
+                          produto.estoque <= 0
+                        }
+                        onClick={() =>
+                          adicionarCarrinho(produto)
+                        }
+                        className={`
+                          w-full
+                          mt-6
+                          py-4
+                          rounded-2xl
+                          font-black
+                          text-xl
+                          transition
+
+                          ${
+                            produto.estoque <= 0
+                              ? "bg-zinc-700 cursor-not-allowed"
+                              : "bg-red-600 hover:bg-red-700"
+                          }
+                        `}
+                      >
+                        {produto.estoque <= 0
+                          ? "Sem estoque"
+                          : "Comprar"}
+                      </motion.button>
+
+                    </div>
+
+                  </motion.div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        ))}
 
       </div>
 
@@ -548,36 +676,6 @@ Obrigado pela preferencia!
         >
           🥩 {toast}
         </motion.div>
-
-      )}
-
-      {carrinho.length > 0 && (
-
-        <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() =>
-            setAbrirCarrinho(true)
-          }
-          className="
-            fixed
-            bottom-10
-            md:bottom-6
-            right-6
-            bg-red-600
-            px-6
-            py-4
-            rounded-full
-            text-xl
-            font-bold
-            shadow-2xl
-            z-50
-          "
-        >
-          Ver Carrinho ({carrinho.length})
-        </motion.button>
 
       )}
 
