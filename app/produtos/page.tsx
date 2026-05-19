@@ -42,13 +42,16 @@ export default function Produtos() {
     }, 2500)
 
     const itemExistente = carrinho.find(
-      (item) => item.id === produto.id
-    )
+  (item) =>
+    item.nome === produto.nome &&
+    item.preco === produto.preco
+)
 
     if (itemExistente) {
 
       const novoCarrinho = carrinho.map((item) =>
-        item.id === produto.id
+        item.nome === produto.nome &&
+item.preco === produto.preco
           ? {
               ...item,
               quantidade: item.quantidade + 1,
@@ -70,10 +73,10 @@ export default function Produtos() {
     }
   }
 
-  function aumentarQuantidade(id: number) {
+  function aumentarQuantidade(id: string) {
 
     const novoCarrinho = carrinho.map((item) =>
-      item.id === id
+      item.nome === id
         ? {
             ...item,
             quantidade: item.quantidade + 1,
@@ -84,7 +87,7 @@ export default function Produtos() {
     setCarrinho(novoCarrinho)
   }
 
-  function diminuirQuantidade(id: number) {
+  function diminuirQuantidade(id: string) {
 
     const itemExistente = carrinho.find(
       (item) => item.id === id
@@ -205,69 +208,57 @@ Obrigado pela preferencia!
               shadow-2xl
             "
           >
-            Carrinho ({carrinho.length})
+            Carrinho (
+  {
+    carrinho.reduce(
+      (acc, item) =>
+        acc + item.quantidade,
+      0
+    )
+  }
+)
           </motion.button>
 
         </div>
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
 
-          <button
-            onClick={() =>
-              document.getElementById("promocoes")?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-            className="bg-red-600 px-5 py-3 rounded-2xl font-bold whitespace-nowrap"
-          >
-            Promoções
-          </button>
+  <a
+    href="#promocoes"
+    className="bg-red-600 px-5 py-3 rounded-2xl font-bold whitespace-nowrap"
+  >
+    Promoções
+  </a>
 
-          <button
-            onClick={() =>
-              document.getElementById("bovinos")?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
-          >
-            Bovinos
-          </button>
+  <a
+    href="#bovinos"
+    className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+  >
+    Bovinos
+  </a>
 
-          <button
-            onClick={() =>
-              document.getElementById("frango")?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
-          >
-            Frango
-          </button>
+  <a
+    href="#frango"
+    className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+  >
+    Frango
+  </a>
 
-          <button
-            onClick={() =>
-              document.getElementById("suinos")?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
-          >
-            Suínos
-          </button>
+  <a
+    href="#suinos"
+    className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+  >
+    Suínos
+  </a>
 
-          <button
-            onClick={() =>
-              document.getElementById("churrasco")?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-            className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
-          >
-            Churrasco
-          </button>
+  <a
+    href="#churrasco"
+    className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap"
+  >
+    Churrasco
+  </a>
 
-        </div>
+</div>
 
       </header>
 
@@ -569,7 +560,7 @@ Obrigado pela preferencia!
 
                     <button
                       onClick={() =>
-                        diminuirQuantidade(item.id)
+                        diminuirQuantidade(item.nome)
                       }
                       className="bg-red-600 w-10 h-10 rounded-xl"
                     >
@@ -582,7 +573,7 @@ Obrigado pela preferencia!
 
                     <button
                       onClick={() =>
-                        aumentarQuantidade(item.id)
+                        aumentarQuantidade(item.nome)
                       }
                       className="bg-green-600 w-10 h-10 rounded-xl"
                     >
