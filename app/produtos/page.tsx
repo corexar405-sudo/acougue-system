@@ -3,26 +3,18 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { supabase } from "../../lib/supabase"
-import { useRouter } from "next/navigation"
 
 export default function Produtos() {
 
   const [produtos, setProdutos] = useState<any[]>([])
   const [carrinho, setCarrinho] = useState<any[]>([])
+  const [toast, setToast] = useState("")
 
   const [nome, setNome] = useState("")
   const [endereco, setEndereco] = useState("")
   const [telefone, setTelefone] = useState("")
 
   const [abrirCarrinho, setAbrirCarrinho] = useState(false)
-
-  const [abrirAdmin, setAbrirAdmin] = useState(false)
-  const [emailAdmin, setEmailAdmin] = useState("")
-  const [senhaAdmin, setSenhaAdmin] = useState("")
-
-  const [toast, setToast] = useState("")
-
-  const router = useRouter()
 
   useEffect(() => {
     carregarProdutos()
@@ -137,17 +129,6 @@ export default function Produtos() {
       )
       .join("\n")
 
-    await supabase.from("pedidos").insert([
-      {
-        cliente: nome,
-        endereco,
-        telefone,
-        pedido: pedidoTexto,
-        total,
-        status: "aguardando",
-      },
-    ])
-
     const mensagem = `
 Pedido realizado com sucesso!
 
@@ -172,9 +153,6 @@ ${telefone}
 Forma de pagamento:
 PIX ou Dinheiro
 
-Entrega estimada:
-40 minutos
-
 Obrigado pela preferencia!
 `
 
@@ -191,114 +169,99 @@ Obrigado pela preferencia!
     setAbrirCarrinho(false)
   }
 
-  async function loginAdmin() {
-
-    const { error } =
-      await supabase.auth.signInWithPassword({
-        email: emailAdmin,
-        password: senhaAdmin,
-      })
-
-    if (error) {
-      alert("Login inválido")
-      return
-    }
-
-    router.push("/admin")
-  }
-
   return (
     <main className="min-h-screen bg-black text-white">
 
-      <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50 backdrop-blur-xl">
+      <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
 
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
 
           <div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-4xl font-black text-red-600 drop-shadow-[0_0_20px_rgba(255,0,0,0.8)]"
-            >
+            <h1 className="text-4xl font-black text-red-600">
               Açougue Premium
-            </motion.h1>
+            </h1>
 
-            <p className="text-zinc-400 text-sm">
+            <p className="text-zinc-400">
               Carnes frescas todos os dias
             </p>
 
           </div>
 
-          <div className="flex items-center gap-4">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() =>
+              setAbrirCarrinho(true)
+            }
+            className="
+              bg-red-600
+              px-6
+              py-4
+              rounded-2xl
+              font-bold
+              shadow-2xl
+            "
+          >
+            Carrinho ({carrinho.length})
+          </motion.button>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() =>
-                setAbrirCarrinho(true)
-              }
-              className="bg-red-600 px-6 py-4 rounded-2xl font-bold shadow-xl hover:shadow-red-600/50"
-            >
-              Carrinho ({carrinho.length})
-            </motion.button>
-
-            <button
-              onClick={() =>
-                setAbrirAdmin(true)
-              }
-              className="text-zinc-300 text-3xl"
-            >
-              ⚙️
-            </button>
-
-          </div>
         </div>
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
 
-          <button className="bg-red-600 px-5 py-3 rounded-2xl whitespace-nowrap font-bold">
+          <button className="bg-red-600 px-5 py-3 rounded-2xl">
             Promoções
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
             Bovinos
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
             Frango
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
             Suínos
           </button>
 
-          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl">
             Churrasco
           </button>
 
         </div>
+
       </header>
 
-      <div className="relative h-[450px] overflow-hidden">
+      <div className="relative h-[340px] overflow-hidden">
 
-        <motion.img
-          initial={{ scale: 1.2 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2 }}
-          src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
-          className="w-full h-full object-cover opacity-40"
-        />
+        <motion.div
+          animate={{
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+          }}
+          className="absolute inset-0"
+        >
 
-        <div className="absolute inset-0 bg-black/40" />
+          <img
+            src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
+            className="w-full h-full object-cover opacity-40"
+          />
+
+        </motion.div>
+
+        <div className="absolute inset-0 bg-black/50" />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
 
           <motion.h1
-            initial={{ opacity: 0, y: -60 }}
+            initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-6xl md:text-8xl font-black text-red-600 drop-shadow-[0_0_25px_rgba(255,0,0,0.8)]"
+            className="text-5xl md:text-7xl font-black text-red-600"
           >
             Açougue Premium
           </motion.h1>
@@ -307,23 +270,42 @@ Obrigado pela preferencia!
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-zinc-200 mt-6 text-2xl"
+            className="text-zinc-200 mt-4 text-xl"
           >
-            Carnes frescas entregues na sua casa
+            🔥 Promoções frescas todos os dias
           </motion.p>
 
+          <motion.div
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 2,
+            }}
+            className="
+              mt-8
+              bg-red-600
+              px-8
+              py-4
+              rounded-2xl
+              font-black
+              text-xl
+              shadow-2xl
+            "
+          >
+            Entrega Rápida 🚀
+          </motion.div>
+
         </div>
+
       </div>
 
-      <div className="p-6 md:p-10 bg-gradient-to-b from-black via-zinc-950 to-black">
+      <div className="p-6 md:p-10 pb-40 bg-gradient-to-b from-black via-zinc-950 to-black">
 
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-black mb-12 text-center"
-        >
+        <h2 className="text-5xl font-black mb-12 text-center">
           🔥 Produtos Premium
-        </motion.h2>
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
@@ -333,113 +315,58 @@ Obrigado pela preferencia!
               key={index}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-              }}
               whileHover={{
                 scale: 1.04,
                 y: -10,
               }}
               className="
-                group
-                relative
-                overflow-hidden
+                bg-zinc-900
                 rounded-[35px]
+                overflow-hidden
                 border border-red-900/40
-                bg-gradient-to-b
-                from-zinc-900
-                to-black
                 shadow-2xl
-                hover:shadow-red-600/40
-                transition-all
-                duration-500
               "
             >
 
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-red-600/10" />
+              <motion.img
+                whileHover={{ scale: 1.1 }}
+                src={
+                  produto.imagem ||
+                  "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
+                }
+                alt={produto.nome}
+                className="w-full h-72 object-cover"
+              />
 
-              <div className="overflow-hidden">
-
-                <motion.img
-                  whileHover={{ scale: 1.12 }}
-                  transition={{ duration: 0.4 }}
-                  src={
-                    produto.imagem ||
-                    "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
-                  }
-                  alt={produto.nome}
-                  className="w-full h-72 object-cover"
-                />
-
-              </div>
-
-              <div className="p-7 relative z-10">
+              <div className="p-7">
 
                 <h2 className="text-4xl font-black capitalize">
                   {produto.nome}
                 </h2>
 
-                <p className="text-zinc-400 mt-3 text-lg">
-                  Carne fresca selecionada diariamente
+                <p className="text-green-400 text-4xl font-black mt-5">
+                  R$ {produto.preco}
                 </p>
 
-                <div className="mt-6 flex items-center justify-between">
-
-                  <div>
-
-                    <p className="text-zinc-500 text-sm">
-                      A partir de
-                    </p>
-
-                    <motion.p
-                      animate={{
-                        scale: [1, 1.05, 1],
-                      }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 2,
-                      }}
-                      className="
-                        text-green-400
-                        text-4xl
-                        font-black
-                        drop-shadow-[0_0_15px_rgba(34,197,94,0.8)]
-                      "
-                    >
-                      R$ {produto.preco}
-                    </motion.p>
-
-                  </div>
-
-                  <motion.button
-                    whileHover={{
-                      scale: 1.08,
-                    }}
-                    whileTap={{
-                      scale: 0.92,
-                    }}
-                    onClick={() =>
-                      adicionarCarrinho(produto)
-                    }
-                    className="
-                      bg-red-600
-                      hover:bg-red-700
-                      px-6
-                      py-4
-                      rounded-2xl
-                      font-black
-                      text-lg
-                      shadow-xl
-                      hover:shadow-red-600/50
-                      transition-all
-                      duration-300
-                    "
-                  >
-                    Comprar
-                  </motion.button>
-
-                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() =>
+                    adicionarCarrinho(produto)
+                  }
+                  className="
+                    bg-red-600
+                    hover:bg-red-700
+                    w-full
+                    mt-6
+                    py-4
+                    rounded-2xl
+                    font-black
+                    text-xl
+                  "
+                >
+                  Comprar
+                </motion.button>
 
               </div>
 
@@ -462,8 +389,14 @@ Obrigado pela preferencia!
           <motion.div
             initial={{ x: 500 }}
             animate={{ x: 0 }}
-            transition={{ type: "spring", stiffness: 120 }}
-            className="bg-zinc-950 w-full md:w-[500px] h-screen p-6 overflow-y-auto"
+            className="
+              bg-zinc-950
+              w-full
+              md:w-[500px]
+              h-screen
+              p-6
+              overflow-y-auto
+            "
           >
 
             <div className="flex items-center justify-between mb-8">
@@ -485,10 +418,8 @@ Obrigado pela preferencia!
 
             {carrinho.map((item, index) => (
 
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
                 className="bg-zinc-900 p-4 rounded-2xl mb-4"
               >
 
@@ -500,7 +431,7 @@ Obrigado pela preferencia!
                       {item.nome}
                     </p>
 
-                    <p className="text-green-400 mt-1">
+                    <p className="text-green-400">
                       R$ {item.preco}
                     </p>
 
@@ -512,7 +443,7 @@ Obrigado pela preferencia!
                       onClick={() =>
                         diminuirQuantidade(item.id)
                       }
-                      className="bg-red-600 w-10 h-10 rounded-xl text-xl"
+                      className="bg-red-600 w-10 h-10 rounded-xl"
                     >
                       -
                     </button>
@@ -525,15 +456,16 @@ Obrigado pela preferencia!
                       onClick={() =>
                         aumentarQuantidade(item.id)
                       }
-                      className="bg-green-600 w-10 h-10 rounded-xl text-xl"
+                      className="bg-green-600 w-10 h-10 rounded-xl"
                     >
                       +
                     </button>
 
                   </div>
+
                 </div>
 
-              </motion.div>
+              </div>
 
             ))}
 
@@ -550,7 +482,7 @@ Obrigado pela preferencia!
                 onChange={(e) =>
                   setNome(e.target.value)
                 }
-                className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
+                className="bg-zinc-800 p-4 rounded-2xl w-full"
               />
 
               <input
@@ -560,7 +492,7 @@ Obrigado pela preferencia!
                 onChange={(e) =>
                   setEndereco(e.target.value)
                 }
-                className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
+                className="bg-zinc-800 p-4 rounded-2xl w-full"
               />
 
               <input
@@ -570,17 +502,23 @@ Obrigado pela preferencia!
                 onChange={(e) =>
                   setTelefone(e.target.value)
                 }
-                className="bg-zinc-800 p-4 rounded-2xl w-full text-lg"
+                className="bg-zinc-800 p-4 rounded-2xl w-full"
               />
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={finalizarPedido}
-                className="bg-green-600 hover:bg-green-700 transition w-full py-5 rounded-2xl font-black text-2xl"
+                className="
+                  bg-green-600
+                  hover:bg-green-700
+                  w-full
+                  py-5
+                  rounded-2xl
+                  font-black
+                  text-2xl
+                "
               >
                 Finalizar Pedido
-              </motion.button>
+              </button>
 
             </div>
 
@@ -595,11 +533,51 @@ Obrigado pela preferencia!
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          className="fixed bottom-24 right-6 bg-red-600 px-6 py-4 rounded-2xl shadow-2xl z-[9999] font-bold"
+          className="
+            fixed
+            bottom-24
+            right-6
+            bg-red-600
+            px-6
+            py-4
+            rounded-2xl
+            shadow-2xl
+            z-[9999]
+            font-bold
+          "
         >
           🥩 {toast}
         </motion.div>
+
+      )}
+
+      {carrinho.length > 0 && (
+
+        <motion.button
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() =>
+            setAbrirCarrinho(true)
+          }
+          className="
+            fixed
+            bottom-10
+            md:bottom-6
+            right-6
+            bg-red-600
+            px-6
+            py-4
+            rounded-full
+            text-xl
+            font-bold
+            shadow-2xl
+            z-50
+          "
+        >
+          Ver Carrinho ({carrinho.length})
+        </motion.button>
 
       )}
 
