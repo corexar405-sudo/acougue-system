@@ -115,7 +115,53 @@ export default function Produtos() {
         item.quantidade,
     0
   )
+async function finalizarPedido() {
 
+  if (carrinho.length === 0) {
+    return
+  }
+
+  const pedidoTexto = carrinho
+    .map(
+      (item) =>
+        `${item.nome} x${item.quantidade}`
+    )
+    .join(", ")
+
+  const totalPedido = carrinho.reduce(
+    (acc, item) =>
+      acc +
+      Number(item.preco) *
+        item.quantidade,
+    0
+  )
+
+  const { error } = await supabase
+    .from("pedidos")
+    .insert([
+      {
+        nome: "Cliente",
+        endereco: "Não informado",
+        telefone: "Não informado",
+        pedido: pedidoTexto,
+        total: totalPedido,
+        status: "Pendente",
+      },
+    ])
+
+  if (error) {
+    console.log(error)
+    return
+  }
+
+  setCarrinho([])
+
+  setToast("Pedido realizado com sucesso!")
+
+  setTimeout(() => {
+    setToast("")
+  }, 3000)
+}
   return (
     <main className="min-h-screen bg-black text-white scroll-smooth">
 
@@ -694,14 +740,15 @@ export default function Produtos() {
                 />
 
                 <motion.button
-                  whileHover={{
-                    scale: 1.02,
-                  }}
-                  whileTap={{
-                    scale: 0.97,
-                  }}
-                  className="
-                    bg-green-600
+  whileHover={{
+    scale: 1.02,
+  }}
+  whileTap={{
+    scale: 0.97,
+  }}
+  onClick={finalizarPedido}
+  className="
+ bg-green-600
                     hover:bg-green-700
                     w-full
                     py-5
