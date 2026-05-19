@@ -20,6 +20,8 @@ export default function Produtos() {
   const [emailAdmin, setEmailAdmin] = useState("")
   const [senhaAdmin, setSenhaAdmin] = useState("")
 
+  const [toast, setToast] = useState("")
+
   const router = useRouter()
 
   useEffect(() => {
@@ -38,6 +40,12 @@ export default function Produtos() {
   }
 
   function adicionarCarrinho(produto: any) {
+
+    setToast(`${produto.nome} adicionado ao carrinho`)
+
+    setTimeout(() => {
+      setToast("")
+    }, 2500)
 
     const itemExistente = carrinho.find(
       (item) => item.id === produto.id
@@ -202,7 +210,7 @@ Obrigado pela preferencia!
   return (
     <main className="min-h-screen bg-black text-white">
 
-      <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+      <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50 backdrop-blur-xl">
 
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
 
@@ -211,7 +219,7 @@ Obrigado pela preferencia!
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-3xl font-black text-red-600"
+              className="text-4xl font-black text-red-600 drop-shadow-[0_0_20px_rgba(255,0,0,0.8)]"
             >
               Açougue Premium
             </motion.h1>
@@ -230,7 +238,7 @@ Obrigado pela preferencia!
               onClick={() =>
                 setAbrirCarrinho(true)
               }
-              className="bg-red-600 px-5 py-3 rounded-2xl font-bold"
+              className="bg-red-600 px-6 py-4 rounded-2xl font-bold shadow-xl hover:shadow-red-600/50"
             >
               Carrinho ({carrinho.length})
             </motion.button>
@@ -239,7 +247,7 @@ Obrigado pela preferencia!
               onClick={() =>
                 setAbrirAdmin(true)
               }
-              className="text-zinc-500 text-2xl"
+              className="text-zinc-300 text-3xl"
             >
               ⚙️
             </button>
@@ -249,30 +257,30 @@ Obrigado pela preferencia!
 
         <div className="flex gap-3 overflow-x-auto px-4 pb-4">
 
-          <button className="bg-red-600 px-4 py-2 rounded-xl whitespace-nowrap">
+          <button className="bg-red-600 px-5 py-3 rounded-2xl whitespace-nowrap font-bold">
             Promoções
           </button>
 
-          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
             Bovinos
           </button>
 
-          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
             Frango
           </button>
 
-          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
             Suínos
           </button>
 
-          <button className="bg-zinc-800 px-4 py-2 rounded-xl whitespace-nowrap">
+          <button className="bg-zinc-800 px-5 py-3 rounded-2xl whitespace-nowrap">
             Churrasco
           </button>
 
         </div>
       </header>
 
-      <div className="relative h-[350px] overflow-hidden">
+      <div className="relative h-[450px] overflow-hidden">
 
         <motion.img
           initial={{ scale: 1.2 }}
@@ -282,13 +290,15 @@ Obrigado pela preferencia!
           className="w-full h-full object-cover opacity-40"
         />
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 bg-black/40" />
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
 
           <motion.h1
-            initial={{ opacity: 0, y: -50 }}
+            initial={{ opacity: 0, y: -60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-black text-red-600"
+            className="text-6xl md:text-8xl font-black text-red-600 drop-shadow-[0_0_25px_rgba(255,0,0,0.8)]"
           >
             Açougue Premium
           </motion.h1>
@@ -297,7 +307,7 @@ Obrigado pela preferencia!
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-zinc-300 mt-4 text-xl"
+            className="text-zinc-200 mt-6 text-2xl"
           >
             Carnes frescas entregues na sua casa
           </motion.p>
@@ -305,57 +315,131 @@ Obrigado pela preferencia!
         </div>
       </div>
 
-      <div className="p-6 md:p-10">
+      <div className="p-6 md:p-10 bg-gradient-to-b from-black via-zinc-950 to-black">
 
-        <h2 className="text-4xl font-bold mb-8">
-          Produtos
-        </h2>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-5xl font-black mb-12 text-center"
+        >
+          🔥 Produtos Premium
+        </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
           {produtos.map((produto, index) => (
 
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{
-                scale: 1.05,
-                y: -8,
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
               }}
-              className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 hover:border-red-600 transition-all duration-300 shadow-xl hover:shadow-red-900/40"
+              whileHover={{
+                scale: 1.04,
+                y: -10,
+              }}
+              className="
+                group
+                relative
+                overflow-hidden
+                rounded-[35px]
+                border border-red-900/40
+                bg-gradient-to-b
+                from-zinc-900
+                to-black
+                shadow-2xl
+                hover:shadow-red-600/40
+                transition-all
+                duration-500
+              "
             >
 
-              <img
-                src={
-                  produto.imagem ||
-                  "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
-                }
-                alt={produto.nome}
-                className="w-full h-64 object-cover"
-              />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-red-600/10" />
 
-              <div className="p-6">
+              <div className="overflow-hidden">
 
-                <h2 className="text-3xl font-bold">
+                <motion.img
+                  whileHover={{ scale: 1.12 }}
+                  transition={{ duration: 0.4 }}
+                  src={
+                    produto.imagem ||
+                    "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
+                  }
+                  alt={produto.nome}
+                  className="w-full h-72 object-cover"
+                />
+
+              </div>
+
+              <div className="p-7 relative z-10">
+
+                <h2 className="text-4xl font-black capitalize">
                   {produto.nome}
                 </h2>
 
-                <p className="text-green-400 text-2xl mt-3 font-bold">
-                  R$ {produto.preco}
+                <p className="text-zinc-400 mt-3 text-lg">
+                  Carne fresca selecionada diariamente
                 </p>
 
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={() =>
-                    adicionarCarrinho(produto)
-                  }
-                  className="bg-red-600 hover:bg-red-700 transition w-full mt-6 py-4 rounded-2xl font-bold text-xl"
-                >
-                  Comprar
-                </motion.button>
+                <div className="mt-6 flex items-center justify-between">
+
+                  <div>
+
+                    <p className="text-zinc-500 text-sm">
+                      A partir de
+                    </p>
+
+                    <motion.p
+                      animate={{
+                        scale: [1, 1.05, 1],
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                      }}
+                      className="
+                        text-green-400
+                        text-4xl
+                        font-black
+                        drop-shadow-[0_0_15px_rgba(34,197,94,0.8)]
+                      "
+                    >
+                      R$ {produto.preco}
+                    </motion.p>
+
+                  </div>
+
+                  <motion.button
+                    whileHover={{
+                      scale: 1.08,
+                    }}
+                    whileTap={{
+                      scale: 0.92,
+                    }}
+                    onClick={() =>
+                      adicionarCarrinho(produto)
+                    }
+                    className="
+                      bg-red-600
+                      hover:bg-red-700
+                      px-6
+                      py-4
+                      rounded-2xl
+                      font-black
+                      text-lg
+                      shadow-xl
+                      hover:shadow-red-600/50
+                      transition-all
+                      duration-300
+                    "
+                  >
+                    Comprar
+                  </motion.button>
+
+                </div>
 
               </div>
 
@@ -364,6 +448,7 @@ Obrigado pela preferencia!
           ))}
 
         </div>
+
       </div>
 
       {abrirCarrinho && (
@@ -447,6 +532,7 @@ Obrigado pela preferencia!
 
                   </div>
                 </div>
+
               </motion.div>
 
             ))}
@@ -497,82 +583,23 @@ Obrigado pela preferencia!
               </motion.button>
 
             </div>
+
           </motion.div>
+
         </motion.div>
+
       )}
 
-      {abrirAdmin && (
+      {toast && (
 
-        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-zinc-950 p-8 rounded-3xl w-[400px]"
-          >
-
-            <h2 className="text-3xl font-black mb-6 text-center">
-              Login Admin
-            </h2>
-
-            <div className="space-y-4">
-
-              <input
-                type="email"
-                placeholder="Email"
-                value={emailAdmin}
-                onChange={(e) =>
-                  setEmailAdmin(e.target.value)
-                }
-                className="bg-zinc-800 p-4 rounded-2xl w-full"
-              />
-
-              <input
-                type="password"
-                placeholder="Senha"
-                value={senhaAdmin}
-                onChange={(e) =>
-                  setSenhaAdmin(e.target.value)
-                }
-                className="bg-zinc-800 p-4 rounded-2xl w-full"
-              />
-
-              <button
-                onClick={loginAdmin}
-                className="bg-red-600 w-full py-4 rounded-2xl font-bold"
-              >
-                Entrar
-              </button>
-
-              <button
-                onClick={() =>
-                  setAbrirAdmin(false)
-                }
-                className="bg-zinc-800 w-full py-4 rounded-2xl font-bold"
-              >
-                Fechar
-              </button>
-
-            </div>
-
-          </motion.div>
-        </div>
-      )}
-
-      {carrinho.length > 0 && (
-
-        <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() =>
-            setAbrirCarrinho(true)
-          }
-          className="fixed bottom-6 right-6 bg-red-600 px-6 py-4 rounded-full text-xl font-bold shadow-2xl z-50"
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="fixed bottom-24 right-6 bg-red-600 px-6 py-4 rounded-2xl shadow-2xl z-[9999] font-bold"
         >
-          Ver Carrinho ({carrinho.length})
-        </motion.button>
+          🥩 {toast}
+        </motion.div>
 
       )}
 
