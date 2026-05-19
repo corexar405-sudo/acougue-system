@@ -25,6 +25,7 @@ export default function Admin() {
   }
 
   async function atualizarStatus(
+
     id: number,
     status: string
   ) {
@@ -39,6 +40,21 @@ export default function Admin() {
     carregarPedidos()
   }
 
+async function entregarPedido(id: number) {
+
+  const { error } = await supabase
+    .from("pedidos")
+    .delete()
+    .eq("id", id)
+
+  if (error) {
+    console.log(error)
+    alert(error.message)
+    return
+  }
+
+  carregarPedidos()
+}
   return (
     <main className="min-h-screen bg-black text-white p-6 md:p-10">
 
@@ -163,62 +179,59 @@ export default function Admin() {
 
                   <div className="grid grid-cols-2 gap-3">
 
-                    <button
-                      onClick={() =>
-                        atualizarStatus(
-                          pedido.id,
-                          "Preparando"
-                        )
-                      }
-                      className="
-                        bg-blue-600
-                        hover:bg-blue-700
-                        py-3
-                        rounded-xl
-                        font-bold
-                      "
-                    >
-                      Preparando
-                    </button>
+  <button
+    onClick={() =>
+      atualizarStatus(
+        pedido.id,
+        "Preparando"
+      )
+    }
+    className="
+      bg-blue-600
+      hover:bg-blue-700
+      py-3
+      rounded-xl
+      font-bold
+    "
+  >
+    Preparando
+  </button>
 
-                    <button
-                      onClick={() =>
-                        atualizarStatus(
-                          pedido.id,
-                          "Saiu para entrega"
-                        )
-                      }
-                      className="
-                        bg-orange-600
-                        hover:bg-orange-700
-                        py-3
-                        rounded-xl
-                        font-bold
-                      "
-                    >
-                      Entrega
-                    </button>
+  <button
+    onClick={() =>
+      atualizarStatus(
+        pedido.id,
+        "Saiu para entrega"
+      )
+    }
+    className="
+      bg-orange-600
+      hover:bg-orange-700
+      py-3
+      rounded-xl
+      font-bold
+    "
+  >
+    Entrega
+  </button>
 
-                    <button
-                      onClick={() =>
-                        atualizarStatus(
-                          pedido.id,
-                          "Entregue"
-                        )
-                      }
-                      className="
-                        bg-green-600
-                        hover:bg-green-700
-                        py-3
-                        rounded-xl
-                        font-bold
-                        col-span-2
-                      "
-                    >
-                      Entregue
-                    </button>
+  <button
+    onClick={() =>
+      entregarPedido(pedido.id)
+    }
+    className="
+      bg-green-600
+      hover:bg-green-700
+      py-3
+      rounded-xl
+      font-bold
+      col-span-2
+    "
+  >
+    Entregue
+  </button>
 
-                  </div>
+</div>
 
                 </div>
 
