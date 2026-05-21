@@ -201,7 +201,7 @@ async function finalizarPedido() {
                 bg-zinc-800
                 hover:bg-zinc-700
                 px-5
-                py-3
+                py-4
                 rounded-2xl
                 font-bold
                 transition
@@ -358,7 +358,12 @@ async function finalizarPedido() {
         transition={{
           duration: 1,
         }}
-        className="relative h-[500px] overflow-hidden"
+        className="
+  relative
+  h-[320px]
+  md:h-[500px]
+  overflow-hidden
+"
       >
 
         <motion.img
@@ -389,7 +394,7 @@ async function finalizarPedido() {
             transition={{
               duration: 0.8,
             }}
-            className="text-5xl md:text-8xl font-black text-red-600"
+            className="text-4xl md:text-8xl font-black text-red-600"
           >
             Açougue Premium
           </motion.h1>
@@ -475,7 +480,7 @@ async function finalizarPedido() {
               {secao.titulo}
             </motion.h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3ap-10">
 
               {produtos
                 .filter(
@@ -502,10 +507,9 @@ async function finalizarPedido() {
                       duration: 0.6,
                       delay: index * 0.1,
                     }}
-                    whileHover={{
-                      scale: 1.04,
-                      y: -12,
-                    }}
+            whileHover={{
+  scale: 1.02,
+}}
                     className="
                       bg-zinc-900
                       rounded-[35px]
@@ -517,14 +521,19 @@ async function finalizarPedido() {
 
                     <motion.img
                       whileHover={{
-                        scale: 1.1,
-                      }}
+  scale: 1.03,
+}}
                       transition={{
                         duration: 0.4,
                       }}
                       src={produto.imagem}
                       alt={produto.nome}
-                      className="w-full h-72 object-cover"
+                      className="
+  w-full
+  h-56
+  md:h-72
+  object-cover
+"
                     />
 
                     <div className="p-7">
@@ -827,8 +836,8 @@ async function finalizarPedido() {
       }}
       className="
         fixed
-        bottom-10
-        right-6
+        bottom-5
+        right-3
         bg-red-600
         px-6
         py-4
