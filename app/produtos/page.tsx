@@ -3,14 +3,18 @@
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "../../lib/supabase"
+import { ifError } from "assert"
 
 export default function Produtos() {
 
   const [produtos, setProdutos] = useState<any[]>([])
   const [carrinho, setCarrinho] = useState<any[]>([])
   const [abrirCarrinho, setAbrirCarrinho] = useState(false)
-  const [toast, setToast] = useState("")
+  const [toast, setToast] = useState("")  
 
+  const [nome, setNome] = useState("")
+  const [endereco, setEndereco] = useState("")
+  const [telefone, setTelefone] = useState("")
   useEffect(() => {
     carregarProdutos()
   }, [])
@@ -140,20 +144,23 @@ async function finalizarPedido() {
   .from("pedidos")
   .insert([
     {
-      cliente: "Cliente",
-      endereco: "Não informado",
-      telefone: "Não informado",
+            cliente: nome,
+endereco: endereco,
+telefone: telefone,
       pedido: pedidoTexto,
       total: totalPedido,
       status: "Pendente",
     },
   ])
 
-  if (error) {
-    console.log(error)
-    return
-  }
+   if (error) {
 
+  console.log(error)
+
+  alert(error.message)
+
+  return
+}
   setCarrinho([])
 
   setToast("Pedido realizado com sucesso!")
@@ -722,22 +729,50 @@ async function finalizarPedido() {
               <div className="mt-8 space-y-5">
 
                 <input
-                  type="text"
-                  placeholder="Seu nome"
-                  className="bg-zinc-800 p-4 rounded-2xl w-full"
-                />
+  type="text"
+  placeholder="Seu nome"
+  value={nome}
+  onChange={(e) =>
+    setNome(e.target.value)
+  }
+  className="
+    bg-zinc-800
+    p-4
+    rounded-2xl
+    w-full  
+  "
+/>
+                
 
                 <input
-                  type="text"
-                  placeholder="Endereço"
-                  className="bg-zinc-800 p-4 rounded-2xl w-full"
-                />
+  type="text"
+  placeholder="Endereço"
+  value={endereco}
+  onChange={(e) =>
+    setEndereco(e.target.value)
+  }
+  className="
+    bg-zinc-800
+    p-4
+    rounded-2xl
+    w-full
+  "
+/>
 
                 <input
-                  type="text"
-                  placeholder="Telefone"
-                  className="bg-zinc-800 p-4 rounded-2xl w-full"
-                />
+  type="text"
+  placeholder="Telefone"
+  value={telefone}
+  onChange={(e) =>
+    setTelefone(e.target.value)
+  }
+  className="
+    bg-zinc-800
+    p-4
+    rounded-2xl
+    w-full
+  "
+/>
 
                 <motion.button
   whileHover={{
@@ -769,43 +804,6 @@ async function finalizarPedido() {
         )}
 
       </AnimatePresence>
-
-      <AnimatePresence>
-
-        {toast && (
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 50,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-            className="
-              fixed
-              bottom-10
-              right-6
-              bg-red-600
-              px-6
-              py-4
-              rounded-2xl
-              shadow-2xl
-              z-[9999]
-              font-bold
-            "
-          >
-            🥩 {toast}
-          </motion.div>
-
-        )}
-
-      </AnimatePresence>
-
     </main>
   )
 }
