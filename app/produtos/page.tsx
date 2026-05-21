@@ -142,16 +142,17 @@ async function finalizarPedido() {
 
   const { error } = await supabase
   .from("pedidos")
-  .insert([
-    {
-            cliente: nome,
-endereco: endereco,
-telefone: telefone,
-      pedido: pedidoTexto,
-      total: totalPedido,
-      status: "Pendente",
-    },
-  ])
+  
+            .insert([
+  {
+    cliente: nome,
+    endereco: endereco,
+    telefone: telefone,
+    pedido: pedidoTexto,
+    total: totalPedido,
+    status: "Pendente",
+  },
+])
 
    if (error) {
 
