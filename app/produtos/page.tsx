@@ -546,12 +546,12 @@ async function finalizarPedido() {
           <div
             key={secao.id}
             id={secao.id}
-            className="mb-24"
+          className="mb-24 space-y-10"
           >
 
             
 
-            <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3ap-10">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
 
               {produtos
                 .filter(
@@ -583,7 +583,7 @@ async function finalizarPedido() {
 }}
                     className="
                       bg-zinc-900
-                      rounded-[35px]
+                      rounded-[35px]mb-6
                       overflow-hidden
                       border border-red-900/40
                       shadow-2xl
@@ -607,7 +607,7 @@ async function finalizarPedido() {
 "
                     />
 
-                    <div className="p-7">
+                    <div className="p-4 md:p-7">
 
                       <h2 className="text-4xl font-black capitalize">
                         {produto.nome}
