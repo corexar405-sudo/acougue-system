@@ -32,11 +32,13 @@ export default function Produtos() {
 
   function adicionarCarrinho(produto: any) {
 
-    setToast(`${produto.nome} adicionado ao carrinho`)
+    setToast(
+    `${produto.nome} adicionado ao carrinho`
+  )
 
-    setTimeout(() => {
-      setToast("")
-    }, 2500)
+  setTimeout(() => {
+    setToast("")
+  }, 2500)
 
     const itemExistente = carrinho.find(
       (item) => item.id === produto.id
@@ -120,6 +122,8 @@ export default function Produtos() {
     0
   )
 async function finalizarPedido() {
+  
+  console.log(nome)
 
   if (carrinho.length === 0) {
     return
@@ -740,7 +744,7 @@ async function finalizarPedido() {
     bg-zinc-800
     p-4
     rounded-2xl
-    w-full  
+    w-full
   "
 />
                 
@@ -805,6 +809,42 @@ async function finalizarPedido() {
         )}
 
       </AnimatePresence>
+      <AnimatePresence>
+
+  {toast && (
+
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 50,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      className="
+        fixed
+        bottom-10
+        right-6
+        bg-red-600
+        px-6
+        py-4
+        rounded-2xl
+        shadow-2xl
+        z-[9999]
+        font-bold
+      "
+    >
+      🥩 {toast}
+    </motion.div>
+
+  )}
+
+</AnimatePresence>
+
     </main>
   )
 }
