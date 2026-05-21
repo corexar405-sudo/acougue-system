@@ -183,15 +183,52 @@ async function finalizarPedido() {
 
           <div>
 
-            <h1 className="text-4xl font-black text-red-600">
-              Açougue Premium
-            </h1>
-
-            <p className="text-zinc-400">
-              Carnes frescas todos os dias
-            </p>
-
           </div>
+           
+          <div className="flex items-center gap-4">
+
+  <motion.img
+    initial={{
+      opacity: 0,
+      scale: 0.5,
+      rotate: -20,
+    }}
+    animate={{
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+    }}
+    transition={{
+      duration: 0.8,
+    }}
+    src="/logo.png"
+    alt="LG Carnes"
+    className="
+      w-16
+      h-16
+      md:w-20
+      md:h-20
+      rounded-full
+      object-cover
+      border-2
+      border-red-600
+      shadow-2xl
+    "
+  />
+
+  <div>
+
+    <h1 className="text-3xl md:text-5xl font-black text-red-600">
+      LG Carnes
+    </h1>
+
+    <p className="text-zinc-400 text-sm md:text-base">
+      Qualidade que você confia
+    </p>
+
+  </div>
+
+</div>
 
           <div className="flex items-center gap-4">
 
