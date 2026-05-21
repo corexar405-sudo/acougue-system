@@ -123,7 +123,7 @@ async function entregarPedido(id: number) {
                     <span className="font-bold">
                       Cliente:
                     </span>{" "}
-                    {pedido.nome}
+                    {pedido.cliente}
                   </p>
 
                   <p>
