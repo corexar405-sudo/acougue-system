@@ -30,9 +30,9 @@ export default function Produtos() {
     }
   }
 
-  function adicionarCarrinho(produto: any) {
+    function adicionarCarrinho(produto: any) {
 
-    setToast(
+  setToast(
     `${produto.nome} adicionado ao carrinho`
   )
 
@@ -40,34 +40,34 @@ export default function Produtos() {
     setToast("")
   }, 2500)
 
-    const itemExistente = carrinho.find(
-      (item) => item.id === produto.id
+  const itemExistente = carrinho.find(
+    (item) => item.id === produto.id
+  )
+
+  if (itemExistente) {
+
+    const novoCarrinho = carrinho.map((item) =>
+      item.id === produto.id
+        ? {
+            ...item,
+            quantidade: item.quantidade + 1,
+          }
+        : item
     )
 
-    if (itemExistente) {
+    setCarrinho(novoCarrinho)
 
-      const novoCarrinho = carrinho.map((item) =>
-        item.id === produto.id
-          ? {
-              ...item,
-              quantidade: item.quantidade + 1,
-            }
-          : item
-      )
+  } else {
 
-      setCarrinho(novoCarrinho)
-
-    } else {
-
-      setCarrinho([
-        ...carrinho,
-        {
-          ...produto,
-          quantidade: 1,
-        },
-      ])
-    }
+    setCarrinho([
+      ...carrinho,
+      {
+        ...produto,
+        quantidade: 1,
+      },
+    ])
   }
+}
 
   function aumentarQuantidade(id: number) {
 
